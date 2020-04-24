@@ -8,25 +8,25 @@ Design the following database schema containing three tables:
 
 ![Database Schema](Assets/schema.png)
 
-* **department**:
+* X **department**:
 
-  * **id** - INT PRIMARY KEY
-  * **name** - VARCHAR(30) to hold department name
+  * X **id** - INT PRIMARY KEY
+  * X **name** - VARCHAR(30) to hold department name
 
-* **role**:
+* X **role**:
 
-  * **id** - INT PRIMARY KEY
-  * **title** -  VARCHAR(30) to hold role title
-  * **salary** -  DECIMAL to hold role salary
-  * **department_id** -  INT to hold reference to department role belongs to
+  * X **id** - INT PRIMARY KEY
+  * X **title** -  VARCHAR(30) to hold role title
+  * X **salary** -  DECIMAL to hold role salary
+  * X **department_id** -  INT to hold reference to department role belongs to
 
-* **employee**:
+* X **employee**:
 
-  * **id** - INT PRIMARY KEY
-  * **first_name** - VARCHAR(30) to hold employee first name
-  * **last_name** - VARCHAR(30) to hold employee last name
-  * **role_id** - INT to hold reference to role employee has
-  * **manager_id** - INT to hold reference to another employee that manager of the current employee. This field may be null if the employee has no manager
+  * X **id** - INT PRIMARY KEY
+  * X **first_name** - VARCHAR(30) to hold employee first name
+  * X **last_name** - VARCHAR(30) to hold employee last name
+  * X **role_id** - INT to hold reference to role employee has
+  * X **manager_id** - INT to hold reference to another employee that manager of the current employee. This field may be null if the employee has no manager
   
 Build a command-line application that at a minimum allows the user to:
 
