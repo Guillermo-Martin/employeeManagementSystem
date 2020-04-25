@@ -30,11 +30,11 @@ Design the following database schema containing three tables:
   
 Build a command-line application that at a minimum allows the user to:
 
-  * Add departments, roles, employees
+  * X Add departments, roles, employees
 
-  * View departments, roles, employees
+  * X View departments, roles, employees
 
-  * Update employee roles
+  * X Update employee roles
 
 Bonus points if you're able to:
 
@@ -86,9 +86,9 @@ How do you deliver this? Here are some guidelines:
 
 * The command-line application should allow users to:
 
-  * Add departments, roles, employees
+  * X Add departments, roles, employees
 
-  * View departments, roles, employees
+  * X View departments, roles, employees
 
   * Update employee roles
 
