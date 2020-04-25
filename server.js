@@ -27,6 +27,7 @@ const basicQuestion = [
       'View all roles',
       'View all employees',
       'Update an employee role',
+      'Exit',
     ],
   },
 ];
@@ -306,6 +307,10 @@ function askUser() {
       case 'Update an employee role':
         updateEmpRole();
         // console.log('update an employee role');
+        break;
+
+      case 'Exit':
+        connection.end();
         break;
 
       default:
