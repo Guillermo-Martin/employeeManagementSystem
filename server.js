@@ -34,7 +34,7 @@ const basicQuestion = [
 // Inquirer add department question
 const deptQuestion = [
   {
-    type: 'list',
+    type: 'rawlist',
     name: 'department',
     message: 'What department would you like to add?',
     choices: [
@@ -48,7 +48,7 @@ const deptQuestion = [
 // Inquirer add role question
 const roleQuestion = [
   {
-    type: 'list',
+    type: 'rawlist',
     name: 'title',
     message: 'What role would you like to add?',
     choices: [
@@ -125,8 +125,10 @@ function newDept() {
     // query to add department into database
     connection.query(query, (err, results) => {
       if (err) throw err;
-      console.log(results);
+      // console.log(results);
     });
+    // return to main menu
+    askUser();
   });
 }
 
@@ -139,8 +141,10 @@ function newRole() {
     // query to add role into database
     connection.query(query, (err, results) => {
       if (err) throw err;
-      console.log(results);
+      // console.log(results);
     });
+    // return to main menu
+    askUser();
   });
 }
 
@@ -152,8 +156,43 @@ function newEmployee() {
     // query to add employee into database
     connection.query(query, (err, results) => {
       if (err) throw err;
-      console.log(results);
+      // console.log(results);
     });
+    // return to main menu
+    askUser();
+  });
+}
+
+// show all departments function
+function showAllDept() {
+  query = 'SELECT * FROM department;';
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    console.table(results);
+    // return to main menu
+    askUser();
+  });
+}
+
+// show all roles function
+function showAllRoles() {
+  query = 'SELECT * FROM role;';
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    console.table(results);
+    // return to main menu
+    askUser();
+  });
+}
+
+// show all employees function
+function showAllEmp() {
+  query = 'SELECT * FROM employee;';
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    console.table(results);
+    // return to main menu
+    askUser();
   });
 }
 
@@ -166,13 +205,13 @@ function updateEmpRole() {
 
     // console.log(results) will return an array of objects
     // saving all the roles from the database to a variable
-    const rolesArr = results.map(function(role) {
+    const rolesArr = results.map((role) => {
       // console.log(role);
       // for each role in results, create an object with title and roleid
       return {
         value: role.id,
         name: role.title,
-      }
+      };
     });
 
     // showing all the employees from the database and saving to a variable
@@ -181,11 +220,11 @@ function updateEmpRole() {
       if (err) throw err;
 
       // for each employee, create an object; get first and last name, and employeeid from database
-      const employeesArr = res.map(function(emp) {
+      const employeesArr = res.map((emp) => {
         return {
           value: emp.id,
           name: `${emp.first_name} ${emp.last_name}`,
-        }
+        };
       });
 
       // then prompt user
@@ -218,32 +257,11 @@ function updateEmpRole() {
   });
 }
 
-// show all departments function
-function showAllDept() {
-  query = 'SELECT * FROM department;';
-  connection.query(query, (err, results) => {
-    if (err) throw err;
-    console.table(results);
-  });
-}
 
-// show all roles function
-function showAllRoles() {
-  query = 'SELECT * FROM role;';
-  connection.query(query, (err, results) => {
-    if (err) throw err;
-    console.table(results);
-  });
-}
 
-// show all employees function
-function showAllEmp() {
-  query = 'SELECT * FROM employee;';
-  connection.query(query, (err, results) => {
-    if (err) throw err;
-    console.table(results);
-  });
-}
+
+
+
 
 
 // ================================
@@ -254,7 +272,7 @@ function showAllEmp() {
 function askUser() {
   // ask the user what they want to do
   inquirer.prompt(basicQuestion).then(response => {
-    console.log(response);
+    // console.log(response, "line 257");
     // filter out the response here
     switch (response.basic) {
       case 'Add a department':
