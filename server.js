@@ -72,6 +72,7 @@ const roleQuestion = [
   },
 ];
 
+
 // Inquirer add a new employee question
 const employeeQuestion = [
   {
@@ -131,9 +132,9 @@ function newDept() {
 
 // Add a new role function
 function newRole() {
+  // ask for role
   inquirer.prompt(roleQuestion).then(response => {
     // take the response and make a query
-    console.log(response);
     query = `INSERT INTO role (title, salary, department_id) VALUES ('${response.title}', ${response.salary}, ${response.deptId});`;
     // query to add role into database
     connection.query(query, (err, results) => {
@@ -147,7 +148,6 @@ function newRole() {
 function newEmployee() {
   inquirer.prompt(employeeQuestion).then(response => {
     // take the response and make a query
-    console.log(response);
     query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${response.firstName}', '${response.lastName}', ${response.roleId}, ${response.managerId});`;
     // query to add employee into database
     connection.query(query, (err, results) => {
@@ -167,6 +167,33 @@ function newEmpRole() {
     //   if (err) throw err;
     //   console.log(results);
     // });
+  });
+}
+
+// show all departments function
+function showAllDept() {
+  query = 'SELECT * FROM department;';
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    console.table(results);
+  });
+}
+
+// show all roles function
+function showAllRoles() {
+  query = 'SELECT * FROM role;';
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    console.table(results);
+  });
+}
+
+// show all employees function
+function showAllEmp() {
+  query = 'SELECT * FROM employee;';
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    console.table(results);
   });
 }
 
@@ -191,40 +218,22 @@ function askUser() {
         newRole();
         // console.log('add a role');
         break;
-      
+
       case 'Add an employee':
         newEmployee();
         // console.log('add an employee');
         break;
 
       case 'View all departments':
-        // create query and query all departments
-        // eslint-disable-next-line no-case-declarations
-        query = 'SELECT * FROM department;';
-        connection.query(query, (err, results) => {
-          if (err) throw err;
-          console.log(results);
-        });
+        showAllDept();
         break;
 
       case 'View all roles':
-        // create query and query all roles
-        // eslint-disable-next-line no-case-declarations
-        query = 'SELECT * FROM role;';
-        connection.query(query, (err, results) => {
-          if (err) throw err;
-          console.log(results);
-        });
+        showAllRoles();
         break;
 
       case 'View all employees':
-        // create query and query all employees
-        // eslint-disable-next-line no-case-declarations
-        query = 'SELECT * FROM employee;';
-        connection.query(query, (err, results) => {
-          if (err) throw err;
-          console.log(results);
-        });
+        showAllEmp();
         // console.log('view an employee');
         break;
 
