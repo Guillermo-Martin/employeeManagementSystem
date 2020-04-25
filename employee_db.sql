@@ -1,4 +1,4 @@
--- DROP DATABASE IF EXISTS seed;
+-- DROP DATABASE IF EXISTS employee_db;
 
 CREATE DATABASE employee_db;
 
@@ -31,7 +31,7 @@ INSERT INTO department (name)
 VALUES ("Graphic Design"), ("Animation"), ("Promotions");
 
 INSERT INTO role (title, salary, department_id)
-VALUES ("Graphic Designer", 100000, 1), ("Animator", 200000, 2), ("Influencer", 300000, 3);
+VALUES ("Graphic Designer", 100000, 1), ("Animator", 200000, 2), ("Head Chef", 300000, 3), ("Baker", 400000, 4), ("Prosecutor", 500000, 5), ("Defense Attorney", 600000, 6),;
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Ryan", "Atwood", 1, 2), ("Seth", "Cohen", 1, 2), ("Marissa", "Cooper", 2, 2), ("Summer", "Roberts", 2, NULL);
