@@ -34,7 +34,7 @@ Build a command-line application that at a minimum allows the user to:
 
   * X View departments, roles, employees
 
-  * X Update employee roles
+  * Update employee roles
 
 Bonus points if you're able to:
 

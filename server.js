@@ -98,18 +98,18 @@ const employeeQuestion = [
 ];
 
 // Inquirer update an employee role function
-const updateEmpRole = [
-  {
-    type: 'input',
-    name: 'employeeUpdate',
-    message: 'Which employee do you want to update?',
-  },
-  {
-    type: 'input',
-    name: 'newEmpRole',
-    message: 'What is their new role?',
-  },
-];
+// const updateEmpQuestion = [
+//   {
+//     type: 'number',
+//     name: 'employeeUpdate',
+//     message: 'Which employee do you want to update?',
+//   },
+//   {
+//     type: 'input',
+//     name: 'newEmpRole',
+//     message: 'What is their new role?',
+//   },
+// ];
 
 // ==============================
 
@@ -158,15 +158,63 @@ function newEmployee() {
 }
 
 // Update employee role function
-function newEmpRole() {
-  inquirer.prompt(updateEmpRole).then(response => {
-    // take the response and make a query
-    console.log(response);
-    // query to add employee into database
-    // connection.query(query, (err, results) => {
-    //   if (err) throw err;
-    //   console.log(results);
-    // });
+function updateEmpRole() {
+  // showing all the roles
+  query = 'SELECT * FROM role;';
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+
+    // console.log(results) will return an array of objects
+    // saving all the roles from the database to a variable
+    const rolesArr = results.map(function(role) {
+      // console.log(role);
+      // for each role in results, create an object with title and roleid
+      return {
+        value: role.id,
+        name: role.title,
+      }
+    });
+
+    // showing all the employees from the database and saving to a variable
+    query = 'SELECT * FROM employee;';
+    connection.query(query, (err, res) => {
+      if (err) throw err;
+
+      // for each employee, create an object; get first and last name, and employeeid from database
+      const employeesArr = res.map(function(emp) {
+        return {
+          value: emp.id,
+          name: `${emp.first_name} ${emp.last_name}`,
+        }
+      });
+
+      // then prompt user
+      inquirer.prompt([
+        {
+          type: 'rawlist',
+          name: 'employeeUpdate',
+          choices: employeesArr, // <---- employee array we made above are now choices
+          message: 'Which employee do you want to update?',
+        },
+        {
+          type: 'rawlist',
+          name: 'newEmpRole',
+          choices: rolesArr, // <---- roles array we made above are now choices
+          message: 'What is their new role?',
+        },
+      ]).then(response => {
+        // take the response and make a query
+        // console.log(response);
+        query = `UPDATE employee SET role_id = '${response.newEmpRole}' WHERE id = '${response.employeeUpdate}';`;
+        // console.log(query);
+        // query to add employee into database
+        connection.query(query, (err, results) => {
+          if (err) throw err;
+          // console.log(results);
+          askUser();
+        });
+      });
+    });
   });
 }
 
@@ -238,7 +286,7 @@ function askUser() {
         break;
 
       case 'Update an employee role':
-        newEmpRole();
+        updateEmpRole();
         // console.log('update an employee role');
         break;
 
