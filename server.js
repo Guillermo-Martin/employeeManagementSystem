@@ -46,85 +46,6 @@ const deptQuestion = [
   },
 ];
 
-// Inquirer add role question
-// const roleQuestion = [
-//   {
-//     type: 'rawlist',
-//     name: 'title',
-//     message: 'What role would you like to add?',
-//     choices: [
-//       'Graphic Designer',
-//       'Animator',
-//       'Head Chef',
-//       'Baker',
-//       'Prosecutor',
-//       'Defense Attorney',
-//     ],
-//   },
-//   {
-//     type: 'rawlist',
-//     name: 'salary',
-//     message: 'What is the salary of this role?',
-//     choices: [
-//       '50000',
-//       '60000',
-//       '70000',
-//       '80000',
-//       '90000',
-//       '100000',
-//     ],
-//   },
-//   {
-//     type: 'rawlist',
-//     name: 'deptId',
-//     message: 'What is the department ID?',
-//     choices: [
-//       '1',
-//       '2',
-//     ],
-//   },
-// ];
-
-
-// Inquirer add a new employee question
-const employeeQuestion = [
-  {
-    type: 'input',
-    name: 'firstName',
-    message: 'What is the employee\'s first name?',
-  },
-  {
-    type: 'lastName',
-    name: 'lastName',
-    message: 'What is the employee\'s last name?',
-  },
-  {
-    type: 'number',
-    name: 'roleId',
-    message: 'What is the employee\'s role ID?',
-  },
-  {
-    type: 'number',
-    name: 'managerId',
-    message: 'What manager ID are they under?',
-  },
-];
-
-// Inquirer update an employee role function
-// const updateEmpQuestion = [
-//   {
-//     type: 'number',
-//     name: 'employeeUpdate',
-//     message: 'Which employee do you want to update?',
-//   },
-//   {
-//     type: 'input',
-//     name: 'newEmpRole',
-//     message: 'What is their new role?',
-//   },
-// ];
-
-// ==============================
 
 // =========== QUERY FUNCTIONS ============
 
@@ -210,16 +131,52 @@ function newRole() {
 
 // Add a new employee function
 function newEmployee() {
-  inquirer.prompt(employeeQuestion).then(response => {
-    // take the response and make a query
-    query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${response.firstName}', '${response.lastName}', ${response.roleId}, ${response.managerId});`;
-    // query to add employee into database
-    connection.query(query, (err, results) => {
-      if (err) throw err;
-      // console.log(results);
+  // query the roles table
+  query = 'SELECT * FROM role;';
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    // save all roles to an array and use for choices
+    const allRoles = results.map((role) => {
+      return {
+        value: role.id,
+        name: role.title,
+      };
     });
-    // return to main menu
-    askUser();
+
+    // ask about new employee
+    inquirer.prompt([
+      {
+        type: 'input',
+        name: 'firstName',
+        message: 'What is the employee\'s first name?',
+      },
+      {
+        type: 'lastName',
+        name: 'lastName',
+        message: 'What is the employee\'s last name?',
+      },
+      {
+        type: 'rawlist',
+        name: 'roleId',
+        message: 'What is the employee\'s role ID?',
+        choices: allRoles,
+      },
+      {
+        type: 'number',
+        name: 'managerId',
+        message: 'What manager ID are they under?',
+      },
+    ]).then(response => {
+      // take the response and make a query
+      query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${response.firstName}', '${response.lastName}', ${response.roleId}, ${response.managerId});`;
+      // query to add employee into database
+      connection.query(query, (err, results) => {
+        if (err) throw err;
+        // console.log(results);
+      });
+      // return to main menu
+      askUser();
+    });
   });
 }
 
