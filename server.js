@@ -35,14 +35,9 @@ const basicQuestion = [
 // Inquirer add department question
 const deptQuestion = [
   {
-    type: 'rawlist',
+    type: 'input',
     name: 'department',
     message: 'What department would you like to add?',
-    choices: [
-      'Graphics',
-      'Food',
-      'Legal',
-    ],
   },
 ];
 
@@ -93,6 +88,7 @@ function newRole() {
           'Baker',
           'Prosecutor',
           'Defense Attorney',
+          'Manager',
         ],
       },
       {
@@ -178,7 +174,8 @@ function newEmployee() {
       askUser();
     });
   });
-}
+};
+
 
 // show all departments function
 function showAllDept() {
@@ -204,7 +201,7 @@ function showAllRoles() {
 
 // show all employees function
 function showAllEmp() {
-  query = 'SELECT * FROM employee;';
+  query = 'SELECT first_name, last_name, title, name, salary FROM employee LEFT JOIN role On employee.role_id = role.id LEFT JOIN department On role.department_id = department.id;';
   connection.query(query, (err, results) => {
     if (err) throw err;
     console.table(results);
