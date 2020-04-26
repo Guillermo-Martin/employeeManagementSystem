@@ -47,31 +47,43 @@ const deptQuestion = [
 ];
 
 // Inquirer add role question
-const roleQuestion = [
-  {
-    type: 'rawlist',
-    name: 'title',
-    message: 'What role would you like to add?',
-    choices: [
-      'Graphic Designer',
-      'Animator',
-      'Head Chef',
-      'Baker',
-      'Prosecutor',
-      'Defense Attorney',
-    ],
-  },
-  {
-    type: 'number',
-    name: 'salary',
-    message: 'What is the salary of this role?',
-  },
-  {
-    type: 'number',
-    name: 'deptId',
-    message: 'What is the department ID?',
-  },
-];
+// const roleQuestion = [
+//   {
+//     type: 'rawlist',
+//     name: 'title',
+//     message: 'What role would you like to add?',
+//     choices: [
+//       'Graphic Designer',
+//       'Animator',
+//       'Head Chef',
+//       'Baker',
+//       'Prosecutor',
+//       'Defense Attorney',
+//     ],
+//   },
+//   {
+//     type: 'rawlist',
+//     name: 'salary',
+//     message: 'What is the salary of this role?',
+//     choices: [
+//       '50000',
+//       '60000',
+//       '70000',
+//       '80000',
+//       '90000',
+//       '100000',
+//     ],
+//   },
+//   {
+//     type: 'rawlist',
+//     name: 'deptId',
+//     message: 'What is the department ID?',
+//     choices: [
+//       '1',
+//       '2',
+//     ],
+//   },
+// ];
 
 
 // Inquirer add a new employee question
@@ -135,19 +147,66 @@ function newDept() {
 
 // Add a new role function
 function newRole() {
-  // ask for role
-  inquirer.prompt(roleQuestion).then(response => {
-    // take the response and make a query
-    query = `INSERT INTO role (title, salary, department_id) VALUES ('${response.title}', ${response.salary}, ${response.deptId});`;
-    // query to add role into database
-    connection.query(query, (err, results) => {
-      if (err) throw err;
-      // console.log(results);
+  // query the department table
+  query = 'SELECT * FROM department;';
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    // save departments to an array and use for choices
+    const deptArr = results.map((dept) => {
+      return {
+        value: dept.id,
+        name: dept.name,
+      };
     });
-    // return to main menu
-    askUser();
+
+    // ask for role
+    inquirer.prompt([
+      {
+        type: 'rawlist',
+        name: 'title',
+        message: 'What role would you like to add?',
+        choices: [
+          'Graphic Designer',
+          'Animator',
+          'Head Chef',
+          'Baker',
+          'Prosecutor',
+          'Defense Attorney',
+        ],
+      },
+      {
+        type: 'rawlist',
+        name: 'salary',
+        message: 'What is the salary of this role?',
+        choices: [
+          '50000',
+          '60000',
+          '70000',
+          '80000',
+          '90000',
+          '100000',
+        ],
+      },
+      {
+        type: 'rawlist',
+        name: 'deptId',
+        message: 'What is the department ID?',
+        choices: deptArr,
+      },
+    ]).then(response => {
+      // take the response and make a query
+      query = `INSERT INTO role (title, salary, department_id) VALUES ('${response.title}', ${response.salary}, ${response.deptId});`;
+      // query to add role into database
+      connection.query(query, (err, results) => {
+        if (err) throw err;
+        // console.log(results);
+      });
+      // return to main menu
+      askUser();
+    });
   });
 }
+
 
 // Add a new employee function
 function newEmployee() {
@@ -257,12 +316,6 @@ function updateEmpRole() {
     });
   });
 }
-
-
-
-
-
-
 
 
 // ================================
