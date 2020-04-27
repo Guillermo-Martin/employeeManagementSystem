@@ -200,7 +200,7 @@ function showAllRoles() {
 
 // show all employees function
 function showAllEmp() {
-  query = 'SELECT first_name, last_name, title, name, salary FROM employee LEFT JOIN role On employee.role_id = role.id LEFT JOIN department On role.department_id = department.id;';
+  query = 'SELECT first_name, last_name, title, name, salary, manager_id FROM employee LEFT JOIN role On employee.role_id = role.id LEFT JOIN department On role.department_id = department.id;';
   connection.query(query, (err, results) => {
     if (err) throw err;
     console.table(results);
