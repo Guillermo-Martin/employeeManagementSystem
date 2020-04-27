@@ -28,6 +28,7 @@ const basicQuestion = [
       'View all employees',
       'Update an employee role',
       'Delete a department',
+      'Delete a role',
       'Exit',
     ],
   },
@@ -320,6 +321,37 @@ function deleteDept() {
   });
 }
 
+// Delete role function
+function deleteRole() {
+  // query the role table
+  query = 'SELECT * FROM role;';
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    // save role to an array and use for choices
+    const roleArr = results.map((role) => {
+      return {
+        value: role.id,
+        name: role.title,
+      };
+    });
+
+    inquirer.prompt([
+      {
+        type: 'rawlist',
+        name: 'roleId',
+        message: 'Which role would you like to remove?',
+        choices: roleArr,
+      },
+    ]).then(response => {
+      query = `DELETE FROM role WHERE id = ${response.roleId};`;
+      connection.query(query, (err, results) => {
+        if (err) throw err;
+        askUser();
+      });
+    });
+  });
+}
+
 
 // ================================
 
@@ -367,6 +399,10 @@ function askUser() {
 
       case 'Delete a department':
         deleteDept();
+        break;
+
+      case 'Delete a role':
+        deleteRole();
         break;
 
       case 'Exit':
