@@ -139,42 +139,58 @@ function newEmployee() {
       };
     });
 
-    // ask about new employee
-    inquirer.prompt([
-      {
-        type: 'input',
-        name: 'firstName',
-        message: 'What is the employee\'s first name?',
-      },
-      {
-        type: 'lastName',
-        name: 'lastName',
-        message: 'What is the employee\'s last name?',
-      },
-      {
-        type: 'rawlist',
-        name: 'roleId',
-        message: 'What is the employee\'s role ID?',
-        choices: allRoles,
-      },
-      {
-        type: 'number',
-        name: 'managerId',
-        message: 'What manager ID are they under?',
-      },
-    ]).then(response => {
-      // take the response and make a query
-      query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${response.firstName}', '${response.lastName}', ${response.roleId}, ${response.managerId});`;
-      // query to add employee into database
-      connection.query(query, (err, results) => {
-        if (err) throw err;
-        // console.log(results);
+    // TO GET A MANAGER
+    // getting all the managers from the database and saving to a variable
+    query = 'SELECT employee.id, first_name, last_name FROM employee INNER JOIN role On employee.role_id = role.id WHERE role.title = \'Manager\';';
+    connection.query(query, (err, res) => {
+      if (err) throw err;
+
+      // for each manager, create an object; get first and last name, and id from database
+      const manArr = res.map((manager) => {
+        return {
+          value: manager.id,
+          name: `${manager.first_name} ${manager.last_name}`,
+        };
       });
-      // return to main menu
-      askUser();
+
+      // ask about new employee
+      inquirer.prompt([
+        {
+          type: 'input',
+          name: 'firstName',
+          message: 'What is the employee\'s first name?',
+        },
+        {
+          type: 'lastName',
+          name: 'lastName',
+          message: 'What is the employee\'s last name?',
+        },
+        {
+          type: 'rawlist',
+          name: 'roleId',
+          message: 'What is the employee\'s role ID?',
+          choices: allRoles,
+        },
+        {
+          type: 'rawlist',
+          name: 'managerId',
+          message: 'What manager ID are they under?',
+          choices: manArr,
+        },
+      ]).then(response => {
+        // take the response and make a query
+        query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${response.firstName}', '${response.lastName}', ${response.roleId}, ${response.managerId});`;
+        // query to add employee into database
+        connection.query(query, (err, results) => {
+          if (err) throw err;
+          // console.log(results);
+        });
+        // return to main menu
+        askUser();
+      });
     });
   });
-};
+}
 
 
 // show all departments function
