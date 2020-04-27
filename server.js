@@ -27,6 +27,7 @@ const basicQuestion = [
       'View all roles',
       'View all employees',
       'Update an employee role',
+      'Update an employee\'s manager',
       'Delete a department',
       'Delete a role',
       'Delete an employee',
@@ -270,6 +271,68 @@ function updateEmpRole() {
 }
 
 
+// update employee manager
+function updateEmpMan() {
+  // showing all the roles
+  query = 'SELECT * FROM employee;';
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+
+    // console.log(results) will return an array of objects
+    // saving all the employees from the database to a variable
+    const employeesArr = results.map((employee) => {
+      // console.log(role);
+      // for each employee in results, create an object with name and employeeid
+      return {
+        value: employee.id,
+        name: `${employee.first_name} ${employee.last_name}`,
+      };
+    });
+
+    // showing all the managers from the database and saving to a variable
+    query = 'SELECT employee.id, first_name, last_name FROM employee INNER JOIN role On employee.role_id = role.id WHERE role.title = \'Manager\';';
+    connection.query(query, (err, res) => {
+      if (err) throw err;
+
+      // for each manager, create an object; get first and last name, and id from database
+      const manArr = res.map((manager) => {
+        return {
+          value: manager.id,
+          name: `${manager.first_name} ${manager.last_name}`,
+        };
+      });
+
+      // then prompt user
+      inquirer.prompt([
+        {
+          type: 'rawlist',
+          name: 'employeeUpdate',
+          choices: employeesArr, // <---- employee array we made above are now choices
+          message: 'Which employee do you want to update?',
+        },
+        {
+          type: 'rawlist',
+          name: 'newManager',
+          choices: manArr, // <---- manager array we made above are now choices
+          message: 'Choose their new manager.',
+        },
+      ]).then(response => {
+        // take the response and make a query
+        // console.log(response);
+        query = `UPDATE employee SET manager_id = '${response.newManager}' WHERE id = '${response.employeeUpdate}';`;
+        // console.log(query);
+        // query to add employee into database
+        connection.query(query, (err, results) => {
+          if (err) throw err;
+          // console.log(results);
+          askUser();
+        });
+      });
+    });
+  });
+}
+
+
 // Delete department function
 function deleteDept() {
   // query the department table
@@ -419,6 +482,10 @@ function askUser() {
 
       case 'Delete an employee':
         deleteEmp();
+        break;
+
+      case 'Update an employee\'s manager':
+        updateEmpMan();
         break;
 
       case 'Exit':
