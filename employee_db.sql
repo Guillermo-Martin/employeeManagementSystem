@@ -1,4 +1,4 @@
--- DROP DATABASE IF EXISTS employee_db;
+DROP DATABASE IF EXISTS employee_db;
 
 CREATE DATABASE employee_db;
 
@@ -27,14 +27,14 @@ CREATE TABLE employee (
   PRIMARY KEY (id)
 );
 
-INSERT INTO department (name)
-VALUES ("Graphics"), ("Food"), ("Legal");
+-- INSERT INTO department (name)
+-- VALUES ("Graphics"), ("Food"), ("Legal");
 
-INSERT INTO role (title, salary, department_id)
-VALUES ("Graphic Designer", 100000, 1), ("Animator", 200000, 1), ("Head Chef", 300000, 2), ("Baker", 400000, 2), ("Prosecutor", 500000, 3), ("Defense Attorney", 600000, 3), ("Manager", 100000, 4);
+-- INSERT INTO role (title, salary, department_id)
+-- VALUES ("Graphic Designer", 100000, 1), ("Animator", 200000, 1), ("Head Chef", 300000, 2), ("Baker", 400000, 2), ("Prosecutor", 500000, 3), ("Defense Attorney", 600000, 3), ("Manager", 100000, 4);
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Ryan", "Atwood", 1, 2), ("Seth", "Cohen", 1, 2), ("Marissa", "Cooper", 2, 2), ("Summer", "Roberts", 2, NULL);
+-- INSERT INTO employee (first_name, last_name, role_id, manager_id)
+-- VALUES ("Ryan", "Atwood", 1, 2), ("Seth", "Cohen", 1, 2), ("Marissa", "Cooper", 2, 2), ("Summer", "Roberts", 2, NULL);
 
 -- SELECT * FROM department; 
 

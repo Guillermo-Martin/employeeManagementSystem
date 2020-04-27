@@ -90,7 +90,7 @@ How do you deliver this? Here are some guidelines:
 
   * X View departments, roles, employees
 
-  * Update employee roles
+  * X Update employee roles
 
 ## Bonus
 
