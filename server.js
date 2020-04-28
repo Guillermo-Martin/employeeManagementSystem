@@ -58,7 +58,6 @@ function newDept() {
     // query to add department into database
     connection.query(query, (err, results) => {
       if (err) throw err;
-      // console.log(results);
     });
     // return to main menu
     askUser();
@@ -120,7 +119,6 @@ function newRole() {
       // query to add role into database
       connection.query(query, (err, results) => {
         if (err) throw err;
-        // console.log(results);
       });
       // return to main menu
       askUser();
@@ -167,7 +165,6 @@ function newEmployee() {
       // query to add employee into database
       connection.query(query, (err, results) => {
         if (err) throw err;
-        // console.log(results);
       });
       // return to main menu
       askUser();
@@ -219,7 +216,6 @@ function updateEmpRole() {
     // console.log(results) will return an array of objects
     // saving all the roles from the database to a variable
     const rolesArr = results.map((role) => {
-      // console.log(role);
       // for each role in results, create an object with title and roleid
       return {
         value: role.id,
@@ -256,9 +252,7 @@ function updateEmpRole() {
         },
       ]).then(response => {
         // take the response and make a query
-        // console.log(response);
         query = `UPDATE employee SET role_id = '${response.newEmpRole}' WHERE id = '${response.employeeUpdate}';`;
-        // console.log(query);
         // query to add employee into database
         connection.query(query, (err, results) => {
           if (err) throw err;
@@ -281,7 +275,6 @@ function updateEmpMan() {
     // console.log(results) will return an array of objects
     // saving all the employees from the database to a variable
     const employeesArr = results.map((employee) => {
-      // console.log(role);
       // for each employee in results, create an object with name and employeeid
       return {
         value: employee.id,
@@ -318,13 +311,10 @@ function updateEmpMan() {
         },
       ]).then(response => {
         // take the response and make a query
-        // console.log(response);
         query = `UPDATE employee SET manager_id = '${response.newManager}' WHERE id = '${response.employeeUpdate}';`;
-        // console.log(query);
         // query to add employee into database
         connection.query(query, (err, results) => {
           if (err) throw err;
-          // console.log(results);
           askUser();
         });
       });
@@ -436,22 +426,18 @@ function deleteEmp() {
 function askUser() {
   // ask the user what they want to do
   inquirer.prompt(basicQuestion).then(response => {
-    // console.log(response, "line 257");
     // filter out the response here
     switch (response.basic) {
       case 'Add a department':
         newDept();
-        // console.log('add a department');
         break;
 
       case 'Add a role':
         newRole();
-        // console.log('add a role');
         break;
 
       case 'Add an employee':
         newEmployee();
-        // console.log('add an employee');
         break;
 
       case 'View all departments':
@@ -464,12 +450,10 @@ function askUser() {
 
       case 'View all employees':
         showAllEmp();
-        // console.log('view an employee');
         break;
 
       case 'Update an employee role':
         updateEmpRole();
-        // console.log('update an employee role');
         break;
 
       case 'Delete a department':
