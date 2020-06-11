@@ -1,4 +1,4 @@
-# Homework: Employee Management System
+# Employee Management System
 
 ## Description
 The following application is a command-line application that prompts a user with a series of choices.  These choices allow a user to add, view, update, and delete
